@@ -14,31 +14,41 @@ import java.util.ArrayList;
 
 import static javafx.application.Application.launch;
 
-public class SIRgraph  {
+public class SIRgraph  extends Application{
 
     private ArrayList<int[]> stat_lib = new ArrayList<>(0);
 
+
     //defining the axes
-    final NumberAxis xAxis = new NumberAxis();
-    final NumberAxis yAxis = new NumberAxis();
+
 
     XYChart.Series infected = new XYChart.Series();
     XYChart.Series susceptible = new XYChart.Series();
 
     //creating the chart
-    final LineChart<Number,Number> lineChart = new LineChart(xAxis,yAxis);
+
 
 //quick chart and swing raptor
 
-    public void first() {launch();}
+    public void first() throws Exception {
+        launch();
+    }
 
 
     public void update(ArrayList<int[]> stat){
         stat_lib=stat;
     }
 
-    //@Override
+    @Override
     public void start(Stage stage) throws Exception {
+        go();
+    }
+
+    public void go() throws Exception {
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        final LineChart<Number,Number> lineChart = new LineChart(xAxis,yAxis);
+        Stage stage= new Stage();
         lineChart.setTitle("SE");
         xAxis.setLabel("Number of Days");
         yAxis.setLabel("people");
@@ -46,9 +56,12 @@ public class SIRgraph  {
 
         infected.setName("infected");
         susceptible.setName("susceptible");
+        System.out.println(stat_lib.size());
         for (int i = 0; i < stat_lib.size(); i++) {
             infected.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[1]));
             susceptible.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[0]));
+            System.out.println(i+":"+stat_lib.get(i)[1]);
+            System.out.println(i+":"+stat_lib.get(i)[0]);
         }
         //populating the series with data
 
