@@ -1,6 +1,9 @@
 package com.company.final_project_shared;
 import java.util.Random;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Simulation {
 
     private static int number_of_people = 500;
@@ -11,7 +14,15 @@ public class Simulation {
     private static Statistics Stat_lib = new Statistics();
     private static int num_interaction = 7;
     private static int Date=0;
+    private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
+    private static int Target_Date;
+    private static double recovered_base_rate=0.0;
+
     //private static SIRgraph graph = new SIRgraph();
+
+    Simulation(int tar_date){
+        Target_Date=tar_date;
+    }
 
     void initialize_stat(){
         int tot_S=0;
@@ -36,7 +47,7 @@ public class Simulation {
         ArrayList person_two=P_library.get_attributes(two);
 
         if((person_one.get(4)!=person_two.get(4))&&(int)person_one.get(4)==1){
-            double base_rate=0.8;
+            double base_rate=(double)person_two.get(6);
             base_rate*=V_lib.vac_effectiveness((int)person_two.get(3))*M_lib.mask_effectiveness((int)person_two.get(2));
             //System.out.println(base_rate);
             Double rand_rate = rand.nextDouble();
@@ -52,6 +63,7 @@ public class Simulation {
         int inf_num = 0;
         for (int i = 0; i < number_of_people; i++) {
             if((Date - (int)P_library.get_attributes(i).get(5))>5) {
+                P_library.get_attributes(i).set(6,recovered_base_rate);
                 P_library.get_attributes(i).set(4,0);
             }
             if((int)P_library.get_attributes(i).get(4) != 1){
@@ -79,8 +91,12 @@ public class Simulation {
     public static void day(){
         sim_stage();
         check_doi();
+        FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
         System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         //graph.first();
         Date++;
+        if(Date==Target_Date){
+            FileWriter.close_writer();
+        }
     }
 }

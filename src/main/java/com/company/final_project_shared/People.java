@@ -16,13 +16,13 @@ public class People {
         this.Num_People=num_people;
         people = new ArrayList();
         for(int i=0; i<num_people; i++){
-            people.add(new ArrayList<Integer>());
+            people.add(new ArrayList<>());
         }
         initialization();
     }
 
-    void input_attributes(int index, int residency, int occupation, int mask, int vaccination, int state, int doi){
-        ArrayList<Integer> attributes = new ArrayList<Integer>();
+    void input_attributes(int index, int residency, int occupation, int mask, int vaccination, int state, int doi, double base_rate){
+        ArrayList attributes = new ArrayList<>();
 
         attributes.add(residency);
         attributes.add(occupation);
@@ -30,6 +30,7 @@ public class People {
         attributes.add(vaccination);
         attributes.add(state);//0-not infected, 1-infected
         attributes.add(doi);// after 5 days, people become susceptible again
+        attributes.add(base_rate);
         people.set(index, attributes);
 
     }
@@ -38,9 +39,10 @@ public class People {
         return (ArrayList) people.get(index);
     }
 
+    //random initialization
     void initialization(){
         for (int i = 0; i < Num_People; i++) {
-            input_attributes(i,rand.nextInt(1),rand.nextInt(1),rand.nextInt(3)-1,rand.nextInt(3)-1,rand.nextInt(2),rand.nextInt(5)-5 );
+            input_attributes(i,rand.nextInt(1),rand.nextInt(1),rand.nextInt(3)-1,rand.nextInt(3)-1,rand.nextInt(2),rand.nextInt(5)-5, 0.8 );
         }
     }
 }
