@@ -1,12 +1,18 @@
 package com.company.final_project_shared;
 
 public class Main {
-    static int tar_date=100;
-    static Simulation Sim = new Simulation(tar_date);
-    public static void main(String[] args){
-        for(int i=0; i<tar_date; i++){
-            Sim.day();
+    static Simulation Sim;
+
+    static {
+        try {
+            Sim = new Simulation();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args){
+
     }
 }
 
