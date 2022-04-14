@@ -18,6 +18,14 @@ public class Simulation {
     private static Statistics Stat_lib = new Statistics();
     private static SIRgraph Grapher = new SIRgraph();
     private static int num_interaction = 7;
+    private static int num_academic_s_interaction = 16;
+    private static int num_academic_t_interaction = 5;
+    private static int num_academic_st_interaction = 10;
+    private static int num_dhall_interaction = 3;
+    private static int num_extracurricular_interaction = 5;
+    private static int num_boarding_interaction = 6;
+    private static double extracurricular_base_rate=0.1;
+    private static double recovered_base_rate=0.8;
     private static int Date=0;
     private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
     private static int Target_Date=100;
