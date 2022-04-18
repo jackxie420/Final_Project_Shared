@@ -11,6 +11,7 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
+    private static int number_of_symptomatic_people = 3;
     private static Random rand = new Random();
     private static People P_library = new People(number_of_people);
     private static Mask M_lib = new Mask();

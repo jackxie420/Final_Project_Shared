@@ -53,25 +53,25 @@ public class People {
     }
 
     //random initialization
-    void initialization(double initial_infected_prob){
+    void initialization(double initial_infected_prob) {
         for (int i = 0; i < Num_People; i++) {
-            int index=i;
-            int residency=0;
+            int index = i;
+            int residency = 0;
             int occupation;
-            if(i<=377){
-                occupation=1;
-            }else if(i<=536){
-                occupation=2;
-            }else{
-                occupation=3;
+            if (i <= 377) {
+                occupation = 1;
+            } else if (i <= 536) {
+                occupation = 2;
+            } else {
+                occupation = 3;
             }
-            int mask=rand.nextInt(3)-1;
-            int vaccination=rand.nextInt(3)-1;
+            int mask = rand.nextInt(1) - 1;
+            int vaccination = rand.nextInt(1) - 1;
             int state;
-            if(rand.nextDouble()<=initial_infected_prob){
-                state=1;
-            }else{
-                state=0;
+            if (rand.nextDouble() <= initial_infected_prob) {
+                state = 1;
+            } else {
+                state = 0;
             }
             int doi = rand.nextInt(5) - 5;
             double base_rate = ((double) rand.nextInt(40)) / 100 + 0.6;
