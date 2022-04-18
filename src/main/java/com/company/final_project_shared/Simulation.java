@@ -187,6 +187,26 @@ public class Simulation {
         }
     }
 
+    private static void covid_testing(int day){
+        for (int i = 0; i < day; i++) {
+
+
+        }
+
+    }
+    
+    private static void rapid_tests(int number_of_symptomatic_people){
+        for(int i=0; i<number_of_symptomatic_people; i++){
+            for(int j=0; j<num_extracurricular_interaction;j++){
+                int receiver_idx = rand.nextInt(number_of_extracurricular);
+                while(receiver_idx==i){
+                    receiver_idx = rand.nextInt(number_of_extracurricular);
+                }
+                interact(j, receiver_idx, extracurricular_base_rate);
+            }
+        }
+    }
+    
     private static void real_sim(){
         sim_academic_s();
         sim_academic_t();
