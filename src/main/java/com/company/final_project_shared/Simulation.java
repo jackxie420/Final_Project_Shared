@@ -202,7 +202,7 @@ public class Simulation {
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
-        //System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
+        System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
             FileWriter.close_writer();

@@ -73,9 +73,10 @@ public class People {
             }else{
                 state=0;
             }
-            int doi=rand.nextInt(5)-5;
-            double base_rate=0.8;
-            input_attributes(index, residency, occupation,  mask,  vaccination,  state,  doi,  base_rate );
+            int doi = rand.nextInt(5) - 5;
+            double base_rate = ((double) rand.nextInt(40)) / 100 + 0.6;
+            //System.out.println(base_rate);
+            input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate);
         }
     }
 
