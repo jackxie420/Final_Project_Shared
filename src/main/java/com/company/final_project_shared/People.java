@@ -52,6 +52,10 @@ public class People {
         return (ArrayList) people.get(index);
     }
 
+    private double calc_base_rate(double center, double radius){
+        return ((double) rand.nextInt((int)(radius*100*2)))/100 + center;
+    }
+
     //random initialization
     void initialization(double initial_infected_prob) {
         for (int i = 0; i < Num_People; i++) {
@@ -74,9 +78,10 @@ public class People {
                 state = 0;
             }
             int doi = rand.nextInt(5) - 5;
-            double base_rate = ((double) rand.nextInt(40)) / 100 + 0.6;
-            //System.out.println(base_rate);
-            input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate);
+            double base_rate = calc_base_rate(0.8, 0.1);
+            int isolation = 1;
+            System.out.println(base_rate);
+            input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate,isolation);
         }
     }
 

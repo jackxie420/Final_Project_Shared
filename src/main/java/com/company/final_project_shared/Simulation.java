@@ -3,6 +3,8 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 public class Simulation {
 
@@ -63,6 +65,10 @@ public class Simulation {
         ArrayList person_one=P_library.get_attributes(one);
         ArrayList person_two=P_library.get_attributes(two);
 
+        if((int)person_one.get(5)==Date){
+            return;
+        }
+
         if((person_one.get(4)!=person_two.get(4))&&(int)person_one.get(4)==1){
             double base_rate=(double)person_two.get(6);
             if(modified_transmission_rate!=-1){
@@ -99,6 +105,23 @@ public class Simulation {
     }
 
     private static void sim_stage(){
+
+
+        for(int i=0; i<number_of_people; i++){
+            for(int j=0; j<6; j++){
+                int receiver_idx= rand.nextInt(number_of_people);
+                while(receiver_idx==i){
+                    receiver_idx= rand.nextInt(number_of_people);
+                }
+                interact(j, receiver_idx,-1);
+            }
+        }
+    }
+
+    private static void sim_stage_lambda(){
+
+        //IntStream.range(0, number_of_people).range(0, num_interaction).map(f->{int idx = rand.nextInt(number_of_people);interact(idx,idx)});
+
         for(int i=0; i<number_of_people; i++){
             for(int j=0; j<num_interaction; j++){
                 int receiver_idx= rand.nextInt(number_of_people);
@@ -177,6 +200,7 @@ public class Simulation {
     }
 
     private static void sim_extracurricular(){
+
         for(int i=0; i<number_of_extracurricular; i++){
             for(int j=0; j<num_extracurricular_interaction;j++){
                 int receiver_idx = rand.nextInt(number_of_extracurricular);
@@ -218,8 +242,8 @@ public class Simulation {
     }
 
     private static void day() throws Exception {
-        //sim_stage();
-        real_sim();
+        sim_stage();
+        //real_sim();
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
