@@ -30,7 +30,7 @@ public class People {
         initialization(0.1);
     }
 
-    void input_attributes(int index, int residency, int occupation, int mask, int vaccination, int state, int doi, double base_rate){
+    void input_attributes(int index, int residency, int occupation, int mask, int vaccination, int state, int doi, double base_rate, int isolation){
         ArrayList attributes = new ArrayList<>();
 
         attributes.add(residency);
@@ -40,6 +40,7 @@ public class People {
         attributes.add(state);//0-not infected, 1-infected
         attributes.add(doi);// after 5 days, people become susceptible again
         attributes.add(base_rate);
+        attributes.add(isolation);//0 isolation 1 is not isolation
         people.set(index, attributes);
 
     }

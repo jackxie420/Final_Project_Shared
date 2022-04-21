@@ -29,7 +29,8 @@ public class Simulation {
     private static int num_boarding_interaction = 6;
     private static double extracurricular_base_rate=0.1;
     private static double recovered_base_rate=0.8;
-    private static int Date=0;
+    private static double rapidtest_base_rate = 0.222;
+    private static int Date=0;//current date
     private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
     private static int Target_Date=100;
 
@@ -220,17 +221,20 @@ public class Simulation {
 
     }
     
-    private static void rapid_tests(int number_of_symptomatic_people){
+    /*private static void rapid_tests(int number_of_symptomatic_people){
+        for(int i = 0; i<number_of_symptomatic_people; i++){
+            if ( P_library.get_attributes(i).set(7, 0);
+        }
         for(int i=0; i<number_of_symptomatic_people; i++){
             for(int j=0; j<num_extracurricular_interaction;j++){
-                int receiver_idx = rand.nextInt(number_of_extracurricular);
+                int receiver_idx = rand.nextInt(number_of_symptomatic_people);
                 while(receiver_idx==i){
-                    receiver_idx = rand.nextInt(number_of_extracurricular);
+                    receiver_idx = rand.nextInt(number_of_symptomatic_people);
                 }
-                interact(j, receiver_idx, extracurricular_base_rate);
+                interact(j, receiver_idx, rapidtest_base_rate);
             }
         }
-    }
+    }*/
     
     private static void real_sim(){
         sim_academic_s();
