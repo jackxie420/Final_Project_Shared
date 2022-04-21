@@ -213,12 +213,14 @@ public class Simulation {
         }
     }
 
-    private static void covid_testing(int day){
-        for (int i = 0; i < day; i++) {
-
-
+    private static void covid_testing(int interval){
+        while(Date % interval == 0){
+            for (int i = 0; i < number_of_people; i++) {
+            if ((int)P_library.get_attributes(i).get(4) == 1){
+                P_library.get_attributes(i).set(7,0);
+            }
+            }
         }
-
     }
     
     /*private static void rapid_tests(int number_of_symptomatic_people){
