@@ -231,9 +231,11 @@ public class Simulation {
         }
     }
     
-    /*private static void rapid_tests(int number_of_symptomatic_people){
-        for(int i = 0; i<number_of_symptomatic_people; i++){
-            if ( P_library.get_attributes(i).set(7, 0);
+    private static void rapid_tests(int number_of_symptomatic_people){
+        for(int i = 0; i<number_of_people; i++){
+            if ( (int)P_library.get_attributes(i).get(4)==1){
+                if((int)P_libra)
+            }
         }
         for(int i=0; i<number_of_symptomatic_people; i++){
             for(int j=0; j<num_extracurricular_interaction;j++){
@@ -244,7 +246,7 @@ public class Simulation {
                 interact(j, receiver_idx, rapidtest_base_rate);
             }
         }
-    }*/
+    }
     
     private static void real_sim(){
         sim_academic_s();
