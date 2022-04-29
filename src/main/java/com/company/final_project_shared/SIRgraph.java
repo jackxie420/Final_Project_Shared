@@ -16,14 +16,15 @@ import static javafx.application.Application.launch;
 
 public class SIRgraph  extends Application{
 
-    private ArrayList<int[]> stat_lib = new ArrayList<>(0);
+    private ArrayList<int[]> stat_lib;
+    private int x;
+
 
 
     //defining the axes
 
 
-    XYChart.Series infected = new XYChart.Series();
-    XYChart.Series susceptible = new XYChart.Series();
+
 
     //creating the chart
 
@@ -36,15 +37,19 @@ public class SIRgraph  extends Application{
 
 
     public void update(ArrayList<int[]> stat){
-        stat_lib=stat;
+        stat_lib= (ArrayList<int[]>) stat.clone();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
         go();
+
     }
 
     public void go() throws Exception {
+        stat_lib = Simulation.getStat();
+        XYChart.Series infected = new XYChart.Series();
+        XYChart.Series susceptible = new XYChart.Series();
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         final LineChart<Number,Number> lineChart = new LineChart(xAxis,yAxis);
@@ -58,6 +63,7 @@ public class SIRgraph  extends Application{
         susceptible.setName("susceptible");
         System.out.println(stat_lib.size());
         for (int i = 0; i < stat_lib.size(); i++) {
+            ;
             infected.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[1]));
             susceptible.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[0]));
             System.out.println(i+":"+stat_lib.get(i)[1]);

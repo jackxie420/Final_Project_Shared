@@ -11,12 +11,13 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
+
+
     private static Random rand = new Random();
     private static People P_library = new People(number_of_people);
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
-    private static SIRgraph Grapher = new SIRgraph();
     private static int num_interaction = 7;
     private static int num_academic_s_interaction = 16;
     private static int num_academic_t_interaction = 5;
@@ -27,13 +28,16 @@ public class Simulation {
     private static double extracurricular_base_rate=0.1;
     private static double recovered_base_rate=0.8;
     private static int Date=0;
-    private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
+    private static WriteFile FileWriter= new WriteFile("C:\\Users\\henry\\Desktop\\Compression\\problem2.txt");
     private static int Target_Date=100;
 
 
-    //private static SIRgraph graph = new SIRgraph();
 
-    Simulation() throws Exception {
+
+
+
+    public Simulation() throws Exception {
+        System.out.println("a");
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
@@ -202,12 +206,20 @@ public class Simulation {
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
-        //System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
+        System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
             FileWriter.close_writer();
-            Grapher.update(Stat_lib.get_SI_stat());
-            //Grapher.first();
+            SIRgraph graph = new SIRgraph();
+            graph.first();
+            //Grapher.update(Stat_lib.get_SI_stat());
+
         }
     }
+
+    public static ArrayList<int[]> getStat(){
+        return Stat_lib.get_SI_stat();
+    }
+
+
 }
