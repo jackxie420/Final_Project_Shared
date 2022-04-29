@@ -44,6 +44,14 @@ public class Simulation {
         }
     }
 
+    double NormalDist(int delta_day){
+        int sd=1;
+        int mean=0;
+
+        int res=1/(sd*1);
+
+    }
+
     void initialize_stat(){
         int tot_S=0;
         int tot_I=0;
