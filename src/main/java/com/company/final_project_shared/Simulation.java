@@ -217,7 +217,7 @@ public class Simulation {
                     receiver_idx = rand.nextInt(number_of_extracurricular);
                 }
                 interact(j, receiver_idx, extracurricular_base_rate);
-            }
+            }   
         }
     }
 
