@@ -234,7 +234,7 @@ public class Simulation {
     private static void rapid_tests(int number_of_symptomatic_people){
         for(int i = 0; i<number_of_people; i++){
             if ( (int)P_library.get_attributes(i).get(4)==1){
-                if((int)P_libra)
+                if((int)P_library.get_attributes(i).get)
             }
         }
         for(int i=0; i<number_of_symptomatic_people; i++){
