@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class People {
-     private Random rand = new Random();
+     private Random rand = new Random(16);
 
 
     ArrayList people = null;
@@ -54,7 +54,9 @@ public class People {
     }
 
     private double calc_base_rate(double center, double radius){
-        return ((double) rand.nextInt((int)(radius*100*2)))/100 + center;
+        double cal =((double) rand.nextInt((int)(radius*100*2)))/100 + center;
+        //System.out.println(cal);
+        return cal;
     }
 
     //random initialization
@@ -81,7 +83,7 @@ public class People {
             int doi = rand.nextInt(5) - 5;
             double base_rate = calc_base_rate(0.8, 0.1);
             int isolation = 1;
-            System.out.println(base_rate);
+            //System.out.println("base rate: "+base_rate);
             input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate,isolation);
         }
     }

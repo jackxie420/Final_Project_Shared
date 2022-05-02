@@ -47,7 +47,7 @@ public class SIRgraph  extends Application{
     }
 
     public void go() throws Exception {
-        stat_lib = Simulation.getStat();
+        //stat_lib = Simulation.getStat();
         XYChart.Series infected = new XYChart.Series();
         XYChart.Series susceptible = new XYChart.Series();
         NumberAxis xAxis = new NumberAxis();
@@ -61,13 +61,13 @@ public class SIRgraph  extends Application{
 
         infected.setName("infected");
         susceptible.setName("susceptible");
-        System.out.println(stat_lib.size());
+        //System.out.println(stat_lib.size());
         for (int i = 0; i < stat_lib.size(); i++) {
             ;
             infected.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[1]));
             susceptible.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[0]));
-            System.out.println(i+":"+stat_lib.get(i)[1]);
-            System.out.println(i+":"+stat_lib.get(i)[0]);
+            //System.out.println(i+":"+stat_lib.get(i)[1]);
+            //System.out.println(i+":"+stat_lib.get(i)[0]);
         }
         //populating the series with data
 

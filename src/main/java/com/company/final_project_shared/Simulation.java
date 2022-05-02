@@ -28,7 +28,7 @@ public class Simulation {
     private static int num_extracurricular_interaction = 5;
     private static int num_boarding_interaction = 6;
     private static double extracurricular_base_rate=0.1;
-    private static double recovered_base_rate=0.8;
+    private static double recovered_base_rate=0.81;
     private static double rapidtest_base_rate = 0.222;
     private static int Date=0;//current date
     private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
@@ -44,12 +44,14 @@ public class Simulation {
         }
     }
 
-    double NormalDist(int delta_day){
-        int sd=1;
-        int mean=0;
+    private static double NormalDist(int x){
+        double sd=3.45;
+        double mean=4;
+        double peak_trans_rate=0.8;
+        double x_0_value=1/(sd*Math.sqrt(2*Math.PI))*Math.pow(Math.E, -0.5* ((mean-mean)/sd) * ((x-mean)/sd)) ;
 
-        int res=1/(sd*1);
-
+        double res=1/(sd*Math.sqrt(2*Math.PI))*Math.pow(Math.E, -0.5* ((x-mean)/sd) * ((x-mean)/sd)) ;
+        return peak_trans_rate/x_0_value*res;
     }
 
     void initialize_stat(){
@@ -77,6 +79,9 @@ public class Simulation {
         if((int)person_one.get(5)==Date){
             return;
         }
+        if((int)person_two.get(5)==Date){
+            return;
+        }
 
         if((person_one.get(4)!=person_two.get(4))&&(int)person_one.get(4)==1){
             double base_rate=(double)person_two.get(6);
@@ -84,7 +89,7 @@ public class Simulation {
                 base_rate=modified_transmission_rate;
             }
             base_rate*=V_lib.vac_effectiveness((int)person_two.get(3))*M_lib.mask_effectiveness((int)person_two.get(2));
-            //System.out.println(base_rate);
+
             //System.out.println(base_rate);
             Double rand_rate = rand.nextDouble();
             if (rand_rate<base_rate){
@@ -99,9 +104,12 @@ public class Simulation {
         int sus_num = 0;
         int inf_num = 0;
         for (int i = 0; i < number_of_people; i++) {
+            P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
+            //if(i==0) System.out.println("date: "+Date+" person 0 rate: "+P_library.get_attributes(i).get(6));
             if((Date - (int)P_library.get_attributes(i).get(5))>5) {
-                P_library.get_attributes(i).set(6,recovered_base_rate);
+                //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
                 P_library.get_attributes(i).set(4,0);
+                P_library.get_attributes(i).set(6,recovered_base_rate);
             }
             if((int)P_library.get_attributes(i).get(4) != 1){
                 sus_num++;
@@ -263,7 +271,7 @@ public class Simulation {
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
-        System.out.println(Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
+        System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
             FileWriter.close_writer();
