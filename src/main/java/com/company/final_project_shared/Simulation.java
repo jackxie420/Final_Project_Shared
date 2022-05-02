@@ -13,8 +13,7 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
-    private static int number_of_symptomatic_people = 3;
-    private static Random rand = new Random();
+    private static Random rand = new Random(15);
     private static People P_library = new People(number_of_people);
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
@@ -241,17 +240,11 @@ public class Simulation {
     
     private static void rapid_tests(int number_of_symptomatic_people){
         for(int i = 0; i<number_of_people; i++){
-            if ( (int)P_library.get_attributes(i).get(4)==1){
-                if((int)P_library.get_attributes(i).get())
-            }
-        }
-        for(int i=0; i<number_of_symptomatic_people; i++){
-            for(int j=0; j<num_extracurricular_interaction;j++){
-                int receiver_idx = rand.nextInt(number_of_symptomatic_people);
-                while(receiver_idx==i){
-                    receiver_idx = rand.nextInt(number_of_symptomatic_people);
+            if ((int)P_library.get_attributes(i).get(4)==1){
+                if((int)P_library.get_attributes(i).get(7)==0){
+//rapidtest_base_rate
+// .6*.37
                 }
-                interact(j, receiver_idx, rapidtest_base_rate);
             }
         }
     }
