@@ -1,6 +1,7 @@
 package com.company.final_project_shared;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -9,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public class Settings extends Application {
     public void start(Stage stage) throws Exception {
         addKey();
         initialize();
-
+        Platform.setImplicitExit(false);
         windows[0].show();
     }
     //make windows
@@ -107,6 +107,10 @@ public class Settings extends Application {
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                windows[0].hide();
+               Simulation.setStats(values);
+                System.out.println("In");
+                Platform.exit();
+
                return;
             }
         });

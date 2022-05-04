@@ -18,7 +18,6 @@ public class Simulation {
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
-    private static SIRgraph Grapher = new SIRgraph();
     private static int num_interaction = 7;
     private static int num_academic_s_interaction = 16;
     private static int num_academic_t_interaction = 5;
@@ -32,11 +31,16 @@ public class Simulation {
     private static int Date=0;//current date
     private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
     private static int Target_Date=100;
+    private static Settings setts = new Settings();
+    private static int[] setStat;
 
 
-    //private static SIRgraph graph = new SIRgraph();
 
-    Simulation() throws Exception {
+
+
+
+    public Simulation() throws Exception {
+        System.out.println("a");
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
@@ -224,7 +228,7 @@ public class Simulation {
                     receiver_idx = rand.nextInt(number_of_extracurricular);
                 }
                 interact(j, receiver_idx, extracurricular_base_rate);
-            }   
+            }
         }
     }
 
@@ -237,7 +241,7 @@ public class Simulation {
             }
         }
     }
-    
+
     private static void rapid_tests(int number_of_symptomatic_people){
         for(int i = 0; i<number_of_people; i++){
             if ((int)P_library.get_attributes(i).get(4)==1){
@@ -248,7 +252,7 @@ public class Simulation {
             }
         }
     }
-    
+
     private static void real_sim(){
         sim_academic_s();
         sim_academic_t();
@@ -268,8 +272,22 @@ public class Simulation {
         Date++;
         if(Date==Target_Date){
             FileWriter.close_writer();
-            Grapher.update(Stat_lib.get_SI_stat());
+            //Grapher.update(Stat_lib.get_SI_stat());
             //Grapher.first();
+            SIRgraph graph = new SIRgraph();
+            System.out.println("A");
+            graph.first();
+            //Grapher.update(Stat_lib.get_SI_stat());
+
         }
     }
+
+    public static ArrayList<int[]> getStat(){
+        return Stat_lib.get_SI_stat();
+    }
+
+    public static void setStats(int[] statts){
+        setStat = statts;
+    }
+
 }
