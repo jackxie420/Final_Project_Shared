@@ -3,6 +3,7 @@ package com.company.final_project_shared;
 import com.company.final_project_shared.Simulation;
 import com.company.final_project_shared.Statistics;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 import static javafx.application.Application.launch;
 
-public class SIRgraph  extends Application{
+public class SIRgraph  extends Application {
 
     private ArrayList<int[]> stat_lib;
     private int x;
@@ -32,7 +33,16 @@ public class SIRgraph  extends Application{
 //quick chart and swing raptor
 
     public void first() throws Exception {
-        launch();
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                launch();
+            }
+        });
+
+
+
     }
 
 
@@ -47,7 +57,7 @@ public class SIRgraph  extends Application{
     }
 
     public void go() throws Exception {
-        //stat_lib = Simulation.getStat();
+        stat_lib = Simulation.getStat();
         XYChart.Series infected = new XYChart.Series();
         XYChart.Series susceptible = new XYChart.Series();
         NumberAxis xAxis = new NumberAxis();
