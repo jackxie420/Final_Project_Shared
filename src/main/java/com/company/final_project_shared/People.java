@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class People {
-     private Random rand = new Random(16);
+     private Random rand = new Random();
 
 
     ArrayList people = null;
@@ -72,8 +72,9 @@ public class People {
             } else {
                 occupation = 3;
             }
-            int mask = rand.nextInt(1) - 1;
-            int vaccination = rand.nextInt(1) - 1;
+            int mask = 3;
+                    //rand.nextInt(4) - 1;
+            int vaccination = rand.nextInt(2) - 1;
             int state;
             if (rand.nextDouble() <= initial_infected_prob) {
                 state = 1;
@@ -81,7 +82,8 @@ public class People {
                 state = 0;
             }
             int doi = rand.nextInt(5) - 5;
-            double base_rate = calc_base_rate(0.8, 0.1);
+            double base_rate = 0.8;
+                    //calc_base_rate(0.8, 0.1);
             int isolation = 1;
             //System.out.println("base rate: "+base_rate);
             input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate,isolation);
