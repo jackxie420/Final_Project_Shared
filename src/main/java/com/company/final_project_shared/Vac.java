@@ -6,9 +6,7 @@ public class Vac {
         if (type==0){
             effectiveness = 1-0.85;
         }
-        else if(type==1){
-            effectiveness = 1-0.85;
-        }
+
         return effectiveness;
     }
 }

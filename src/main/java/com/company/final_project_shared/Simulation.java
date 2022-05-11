@@ -13,8 +13,8 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
-    private static Random rand = new Random(18);
     private static People P_library ;
+    private static Random rand = new Random();
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
@@ -26,7 +26,7 @@ public class Simulation {
     private static int num_extracurricular_interaction = 5;
     private static int num_boarding_interaction = 6;
     private static double extracurricular_base_rate=0.1;
-    private static double recovered_base_rate=0.81;
+    private static double recovered_base_rate=0.15;
     private static double rapidtest_base_rate = 0.222;
     private static int Date=0;//current date
     //"C:\\Users\\henry\\Desktop\\Compression\\problem2.txt"
@@ -37,7 +37,7 @@ public class Simulation {
     private static int[] setStat;
 
 
-//line 88 for potential problem
+
 
 
 
@@ -103,15 +103,14 @@ public class Simulation {
         if((int)person_two.get(5)==Date){
             return;
         }
-       // System.out.println("a");
+
         if((person_one.get(4)!=person_two.get(4))&&(int)person_one.get(4)==1){
-           // System.out.println("h");
             double base_rate=(double)person_two.get(6);
             if(modified_transmission_rate!=-1){
                 base_rate=modified_transmission_rate;
             }
             base_rate*=V_lib.vac_effectiveness((int)person_two.get(3))*M_lib.mask_effectiveness((int)person_two.get(2));
-            System.out.println("infection rate "+base_rate);
+
             //System.out.println(base_rate);
             Double rand_rate = rand.nextDouble();
             if (rand_rate<base_rate){
@@ -126,7 +125,7 @@ public class Simulation {
         int sus_num = 0;
         int inf_num = 0;
         for (int i = 0; i < number_of_people; i++) {
-            P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
+            //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
             //if(i==0) System.out.println("date: "+Date+" person 0 rate: "+P_library.get_attributes(i).get(6));
             if((Date - (int)P_library.get_attributes(i).get(5))>5) {
                 //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
@@ -136,7 +135,6 @@ public class Simulation {
             if((int)P_library.get_attributes(i).get(4) != 1){
                 sus_num++;
             }else {
-                //System.out.println("inf");
                 inf_num++;
             }
         }
