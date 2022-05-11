@@ -33,7 +33,8 @@ public class SIRgraph  extends Application {
 //quick chart and swing raptor
 
     public void first() throws Exception {
-
+        launch();
+        /*
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -41,6 +42,8 @@ public class SIRgraph  extends Application {
             }
         });
 
+
+         */
 
 
     }

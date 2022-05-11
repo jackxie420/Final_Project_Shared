@@ -9,6 +9,10 @@ public class People {
 
     ArrayList people = null;
     int Num_People;
+    int board;
+    int students;
+    double vacPercent;
+    int maskMandate;
 
     //boarding/day faculty/student type of mask vaccination state susceptible/infected/recovered
 
@@ -21,8 +25,12 @@ public class People {
         82 teaching faculties
      */
 
-    People(int num_people){
+    People(int num_people,int board, int students,double vacPercent, int maskMandate){
         this.Num_People=num_people;
+        this.board = board;
+        this.students = students;
+        this.vacPercent = vacPercent;
+        this.maskMandate = maskMandate;
         people = new ArrayList();
         for(int i=0; i<num_people; i++){
             people.add(new ArrayList<>());
@@ -65,15 +73,28 @@ public class People {
             int index = i;
             int residency = 0;
             int occupation;
-            if (i <= 377) {
+            if (i <= board) {
                 occupation = 1;
-            } else if (i <= 536) {
+            } else if (i <= students) {
                 occupation = 2;
             } else {
                 occupation = 3;
             }
             int mask = rand.nextInt(1) - 1;
-            int vaccination = rand.nextInt(1) - 1;
+            if(maskMandate == 4){
+                mask = rand.nextInt(1) - 1;
+            }else if(maskMandate == 1){
+                mask = 0;
+            } else if(maskMandate == 0){
+                mask = 2;
+            }else {mask = 3;}
+
+            int vaccination ;
+            if(rand.nextDouble()<=vacPercent){
+                vaccination = 1;
+            }else {
+                vaccination = 0;
+            }
             int state;
             if (rand.nextDouble() <= initial_infected_prob) {
                 state = 1;
