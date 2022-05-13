@@ -40,12 +40,7 @@ values key
 3 number of faculty
 4 percentage vaccinated  divide by 100 to get percentage
 5 type mandated 0 surgical 1 cloth 2 N95 4 none
-6 base infection rate divide by 100 to get percentage
-7 the basic number of daily contacts
-8 the base transmission of surgical masks divide by 100 to get percentage
-9 the base transmission of cloth masks divide by 100 to get percentage
-10 the base transmission of n95 masks divide by 100 to get percentage
-
+6 virus type 0 is omicron 1 is delta
  */
 //use dictionary with name of var and its place in value arraylist for easy change
 public class Settings extends Application {
@@ -64,32 +59,28 @@ public class Settings extends Application {
         windows[0].show();
     }
     //make windows
-    public void initialize(){
+    private void initialize(){
         mainScreen();
         setting();
         simulation();
         population();
         policy();
-        disease();
-        diseaseTAdvanced();
+        virus();
+
     }
 
-    public void addKey(){
+    private void addKey(){
         key.put("Nday",0);
         key.put("board",1);
         key.put("day",2);
         key.put("fac",3);
         key.put("vacP",4);
         key.put("maskT",5);
-        key.put("baseT",6);
-        key.put("baseCon",7);
-        key.put("surgT",8);
-        key.put("clothT",9);
-        key.put("n95T",10);
+        key.put("virusT",6);
 
     }
 
-    public void mainScreen(){
+    private void mainScreen(){
         windows[0] = new Stage();
         windows[0].setTitle("Start");
 
@@ -132,7 +123,7 @@ public class Settings extends Application {
 
     }
 
-    public void setting(){
+    private void setting(){
         windows[1] = new Stage();
         windows[1].setTitle("Settings");
 
@@ -140,7 +131,7 @@ public class Settings extends Application {
         // create a button
         Button simulation = new Button("simulation");
         Button population = new Button("population");
-        Button disease = new Button("disease");
+        Button virus = new Button("virus type");
         Button human_policy = new Button("human policy");
         Button back = new Button("Back");
 
@@ -150,8 +141,8 @@ public class Settings extends Application {
         //r.add(instructions,0,0,4,0);
         r.add(simulation,0,1);
         r.add(population,1,1);
-        r.add(disease,2,1);
-        r.add(human_policy,3,1);
+        r.add(human_policy,2,1);
+        r.add(virus,3,1);
         r.add(back,1,2);
         r.setAlignment(Pos.CENTER);
 
@@ -169,16 +160,18 @@ public class Settings extends Application {
 
             }
         });
-        disease.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                windows[1].hide();
-                windows[5].show();
-            }
-        });
+
         human_policy.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 windows[1].hide();
                 windows[4].show();
+
+            }
+        });
+        virus.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                windows[1].hide();
+                windows[5].show();
 
             }
         });
@@ -199,7 +192,7 @@ public class Settings extends Application {
 
     }
 
-    public void simulation(){
+    private void simulation(){
         windows[2] = new Stage();
         windows[2].setTitle("Settings");
         Label number = new Label("Number of Days in Simulation");
@@ -240,7 +233,7 @@ public class Settings extends Application {
 
     }
 
-    public void population(){
+    private void population(){
         windows[3] = new Stage();
         windows[3].setTitle("Population");
         Button back = new Button("Back");
@@ -312,7 +305,7 @@ public class Settings extends Application {
         windows[3].setScene(sc);
     }
 
-    public void policy(){
+    private void policy(){
         windows[4] = new Stage();
         windows[4].setTitle("policy");
         Label number = new Label("50.00%");
@@ -381,33 +374,26 @@ public class Settings extends Application {
 
     }
 
-    public void disease(){
+    private void virus(){
         windows[5] = new Stage();
-        windows[5].setTitle("disease");
-        Label number = new Label("50.00%");
-        Label vac = new Label("Transmission rate");
-        Label con = new Label("base contacts a day");
+        windows[5].setTitle("virus");
         Button back = new Button("Back");
-        Button apply = new Button("Apply");
-        Button advanced = new Button("Advanced");
-        TextField contact = new TextField("5");
-        Slider transmiss = new Slider(0,100,50);
+        final ComboBox vType = new ComboBox();
         // create a stack pane
         GridPane r = new GridPane();
         //default value for variables add so nothing breaks if it isn't changed
-        values[key.get("baseT")] = 1000;
-        values[key.get("baseCon")] = 5;
+        values[key.get("virusT")] = 0;
 
+        vType.getItems().addAll(
+                "Omicron",
+                "Delta"
+
+        );
+        vType.setValue(vType.getItems().get(0));
 
 
         r.add(back,0,2);
-        r.add(transmiss,1,0);
-        r.add(vac,0,0);
-        r.add(advanced,3,0);
-        r.add(con,0,1);
-        r.add(contact,1,1);
-        r.add(apply,2,1);
-        r.add(number,2,0);
+        r.add(vType,0,1);
         r.setAlignment(Pos.CENTER);
 
         back.setOnAction(new EventHandler<ActionEvent>() {
@@ -417,118 +403,23 @@ public class Settings extends Application {
 
             }
         });
-        transmiss.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                number.setText(String.format("%.2f%s", new_val,"%"));
-                values[key.get("vacP")] = (int)(new_val.doubleValue()*100);
+
+        vType.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                if ('O' ==vType.getValue().toString().charAt(0)){
+                    values[key.get("virusT")] = 0;
+                }else if ('D' ==vType.getValue().toString().charAt(0)){
+                    values[key.get("virusT")] = 1;
+                }
+
             }
         });
-
-        apply.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                values[key.get("baseCon")] = Integer.parseInt(contact.getCharacters().toString());
-            }
-        });
-
-        advanced.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                windows[5].hide();
-                windows[6].show();
-            }
-        });
-
 
         // create a scene
         Scene sc = new Scene(r, 800, 600);
 
         // set the scene
         windows[5].setScene(sc);
-
-
-    }
-
-    public void diseaseTAdvanced(){
-        windows[6] = new Stage();
-        windows[6].setTitle("transmission advanced");
-        Button back = new Button("Back");
-
-        Label numberS = new Label("50.00%");
-        Label nameS = new Label("Transmission rate surgical masks");
-        Slider surgical = new Slider(0,100,50);
-
-        Label numberC = new Label("50.00%");
-        Label nameC = new Label("Transmission rate cloth masks");
-        Slider cloth = new Slider(0,100,50);
-
-        Label numberN = new Label("50.00%");
-        Label nameN = new Label("Transmission rate N95 masks");
-        Slider n95 = new Slider(0,100,50);
-        // create a stack pane
-        GridPane r = new GridPane();
-        //default value for variables add so nothing breaks if it isn't changed
-        values[key.get("surgT")] = 1000;
-        values[key.get("clothT")] = 1000;
-        values[key.get("n95T")] = 1000;
-
-
-
-        r.add(back,0,3);
-        r.add(surgical,1,0);
-        r.add(nameS,0,0);
-        r.add(numberS,2,0);
-
-        r.add(cloth,1,1);
-        r.add(nameC,0,1);
-        r.add(numberC,2,1);
-
-        r.add(n95,1,2);
-        r.add(nameN,0,2);
-        r.add(numberN,2,2);
-
-        r.setAlignment(Pos.CENTER);
-
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                windows[6].hide();
-                windows[5].show();
-
-            }
-        });
-        surgical.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                numberS.setText(String.format("%.2f%s", new_val,"%"));
-                values[key.get("surgT")] = (int)(new_val.doubleValue()*100);
-            }
-        });
-
-        cloth.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                numberC.setText(String.format("%.2f%s", new_val,"%"));
-                values[key.get("clothT")] = (int)(new_val.doubleValue()*100);
-            }
-        });
-
-        n95.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                numberN.setText(String.format("%.2f%s", new_val,"%"));
-                values[key.get("n95T")] = (int)(new_val.doubleValue()*100);
-            }
-        });
-
-
-
-
-        // create a scene
-        Scene sc = new Scene(r, 800, 600);
-
-        // set the scene
-        windows[6].setScene(sc);
 
 
     }

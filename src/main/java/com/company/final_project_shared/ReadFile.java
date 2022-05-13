@@ -20,10 +20,15 @@ public class ReadFile {
     }
 
     public void retrieve(){
+        System.out.println("helo");
+        System.out.println(read.hasNext());
         while (read.hasNextLine()){
+
             String[] temp = read.nextLine().split(" ");
+            System.out.println(temp[0]+" "+temp[1]);
             stats.add(new int[] {Integer.parseInt(temp[0]), Integer.parseInt(temp[1])} );
         }
+        close();
     }
 
     public ArrayList<int[]> get(){return  stats;}

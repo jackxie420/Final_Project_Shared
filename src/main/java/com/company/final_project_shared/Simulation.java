@@ -13,8 +13,8 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
+    private static People P_library ;
     private static Random rand = new Random();
-    private static People P_library = new People(number_of_people);
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
@@ -31,7 +31,9 @@ public class Simulation {
     private static double rapidtest_base_rate = 0.222;
     private static double coreectly_tested = 0.99;
     private static int Date=0;//current date
-    private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
+    //"C:\\Users\\henry\\Desktop\\Compression\\problem2.txt"
+    private static WriteFile FileWriter;
+    private static ReadFile FileReader= new ReadFile("information.txt");
     private static int Target_Date=100;
     private static Settings setts = new Settings();
     private static int[] setStat;
@@ -42,11 +44,27 @@ public class Simulation {
 
 
     public Simulation() throws Exception {
-        System.out.println("a");
+        GraphRun();
+        settingsRun();
+        FileWriter= new WriteFile("information.txt");
+        //System.out.println("a");
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
         }
+    }
+    private void GraphRun() throws Exception {
+        FileReader.retrieve();
+        Stat_lib.total_SI = FileReader.get();
+        SIRgraph graph = new SIRgraph();
+        graph.first();
+        System.exit(0);
+    }
+
+    private void settingsRun() {
+        setts.begin();
+        settingsChoice();
+        P_library = new People(number_of_people,number_of_boarders,number_of_students,setStat[4]/10000.0,setStat[5]);
     }
 
     private static double NormalDist(int x){
@@ -124,8 +142,6 @@ public class Simulation {
         }
         Stat_lib.SI_change(sus_num, inf_num);
         //graph.update(Stat_lib.get_SI_stat());
-
-
     }
 
     private static void sim_stage(){
@@ -302,15 +318,15 @@ public class Simulation {
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
-        System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
+        //System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
             FileWriter.close_writer();
             //Grapher.update(Stat_lib.get_SI_stat());
             //Grapher.first();
-            SIRgraph graph = new SIRgraph();
-            System.out.println("A");
-            graph.first();
+            //SIRgraph graph = new SIRgraph();
+            //System.out.println("A");
+            //graph.first();
             //Grapher.update(Stat_lib.get_SI_stat());
 
         }
@@ -322,6 +338,16 @@ public class Simulation {
 
     public static void setStats(int[] statts){
         setStat = statts;
+    }
+
+    private static void settingsChoice(){
+        Target_Date= setStat[0];
+
+        number_of_students = setStat[1]+setStat[2];
+        number_of_boarders = setStat[1];
+        number_of_faculties = setStat[3];
+        number_of_people = setStat[1]+setStat[2]+setStat[3];
+
     }
 
 }

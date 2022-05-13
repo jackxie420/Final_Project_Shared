@@ -12,13 +12,14 @@ public class WriteFile {
         try{
             myWriter= new FileWriter(loc);
         }catch(IOException e){
-            System.out.println("Output Error constructor");
+            System.out.println(e);
             System.exit(0);
         }
     }
 
     public static void write_SI(int S, int I){
         try{
+            System.out.println("writting");
             myWriter.write(S+" "+I+"\n");
         }catch(IOException e){
             System.out.println("Output Error write_SI");
@@ -29,6 +30,7 @@ public class WriteFile {
 
     public static void close_writer(){
         try{
+            myWriter.flush();
             myWriter.close();
         }catch(IOException e){
             System.out.println("Output Error close File");
