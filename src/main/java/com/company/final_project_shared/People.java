@@ -83,10 +83,12 @@ public class People {
             }
             int doi = rand.nextInt(5) - 5;
             double base_rate = 0.8;
+            if(state==1) base_rate=0.15;
                     //calc_base_rate(0.8, 0.1);
             int isolation = 1;
             //System.out.println("base rate: "+base_rate);
             input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate,isolation);
+            
         }
     }
 

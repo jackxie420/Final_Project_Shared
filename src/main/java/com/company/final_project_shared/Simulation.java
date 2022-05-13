@@ -19,15 +19,17 @@ public class Simulation {
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
     private static int num_interaction = 7;
-    private static int num_academic_s_interaction = 16;
+    private static int num_academic_interaction = 7;
+    private static int num_academic_s_interaction = 10;
     private static int num_academic_t_interaction = 5;
-    private static int num_academic_st_interaction = 10;
+    private static int num_academic_st_interaction = 5;
     private static int num_dhall_interaction = 3;
     private static int num_extracurricular_interaction = 5;
-    private static int num_boarding_interaction = 6;
+    private static int num_boarding_interaction = 3;
     private static double extracurricular_base_rate=0.1;
     private static double recovered_base_rate=0.15;
     private static double rapidtest_base_rate = 0.222;
+    private static double coreectly_tested = 0.99;
     private static int Date=0;//current date
     private static WriteFile FileWriter= new WriteFile("/Users/jx/Desktop/ATCS_Final/output.txt");
     private static int Target_Date=100;
@@ -79,10 +81,10 @@ public class Simulation {
         ArrayList person_one=P_library.get_attributes(one);
         ArrayList person_two=P_library.get_attributes(two);
 
-        if((int)person_one.get(5)==Date){
+        if((int)person_one.get(5)==Date||(int)person_one.get(7)==0){
             return;
         }
-        if((int)person_two.get(5)==Date){
+        if((int)person_two.get(5)==Date||(int)person_two.get(7)==0){
             return;
         }
 
@@ -135,7 +137,7 @@ public class Simulation {
                 while(receiver_idx==i){
                     receiver_idx= rand.nextInt(number_of_people);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
@@ -150,12 +152,24 @@ public class Simulation {
                 while(receiver_idx==i){
                     receiver_idx= rand.nextInt(number_of_people);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
 
+    private static void sim_academic() {
+        for (int i = 0; i < number_of_people; i++) {
+            for (int j = 0; j < num_academic_interaction; j++) {
+                int receiver_idx = rand.nextInt(number_of_people);
+                while (receiver_idx == i) {
+                    receiver_idx = rand.nextInt(number_of_people);
+                }
+                interact(i, receiver_idx,-1);
+            }
+        }
+    }
 
+/*
     //academic  student
 
     private static void sim_academic_s() {
@@ -165,11 +179,13 @@ public class Simulation {
                 while (receiver_idx == i) {
                     receiver_idx = rand.nextInt(number_of_students);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
 
+ */
+/*
 
     private static void sim_academic_t() {
         for (int i = number_of_students; i < number_of_students+number_of_faculties; i++) {
@@ -178,11 +194,13 @@ public class Simulation {
                 while (receiver_idx == i) {
                     receiver_idx = rand.nextInt(number_of_faculties)+number_of_students;
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
 
+ */
+/*
     private static void sim_academic_st() {
         for (int i = 0; i < number_of_people; i++) {
             for (int j = 0; j < num_academic_st_interaction; j++) {
@@ -190,11 +208,11 @@ public class Simulation {
                 while (receiver_idx == i) {
                     receiver_idx = rand.nextInt(number_of_people);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
-
+*/
 
     //boarding 377
     private static void sim_boarding(){
@@ -204,7 +222,7 @@ public class Simulation {
                 while(receiver_idx==i){
                     receiver_idx = rand.nextInt(number_of_boarders);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
@@ -216,7 +234,7 @@ public class Simulation {
                 while(receiver_idx==i){
                     receiver_idx = rand.nextInt(number_of_people);
                 }
-                interact(j, receiver_idx,-1);
+                interact(i, receiver_idx,-1);
             }
         }
     }
@@ -229,7 +247,7 @@ public class Simulation {
                 while(receiver_idx==i){
                     receiver_idx = rand.nextInt(number_of_extracurricular);
                 }
-                interact(j, receiver_idx, extracurricular_base_rate);
+                interact(i, receiver_idx, extracurricular_base_rate);
             }
         }
     }
@@ -237,9 +255,14 @@ public class Simulation {
     private static void covid_testing(int interval){
         while(Date % interval == 0){
             for (int i = 0; i < number_of_people; i++) {
-            if ((int)P_library.get_attributes(i).get(4) == 1){
-                P_library.get_attributes(i).set(7,0);
-            }
+                if ((int)P_library.get_attributes(i).get(7) == 1){
+                    if ((int)P_library.get_attributes(i).get(4) == 1){
+                        if (coreectly_tested * Math.random()*10000<99)
+                        P_library.get_attributes(i).set(7,0);
+                    }
+                    //
+                    //doi remove from quarantine
+                }
             }
         }
     }
@@ -247,21 +270,30 @@ public class Simulation {
     private static void rapid_tests(int number_of_symptomatic_people){
         for(int i = 0; i<number_of_people; i++){
             if ((int)P_library.get_attributes(i).get(4)==1){
-                if((int)P_library.get_attributes(i).get(7)==0){
+                if((int)P_library.get_attributes(i).get(7)==1){
+                   // if (rapidtest_base_rate * rand.nextInt() )
+
 //rapidtest_base_rate
 // .6*.37
+                    //set date to current date if test positive
+                    //quarantine
+                    //another if. if already in quarantine nothing applies
                 }
             }
         }
     }
 
     private static void real_sim(){
-        sim_academic_s();
-        sim_academic_t();
-        sim_academic_st();
+
+        sim_academic();
+        /*
+
         sim_extracurricular();
         sim_boarding();
         sim_dhall();
+
+
+         */
     }
 
     private static void day() throws Exception {
