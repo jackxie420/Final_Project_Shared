@@ -451,19 +451,19 @@ public class Settings extends Application {
 
         //sliders
 
-        Label number = new Label(".100");
+        Label number = new Label("0.100");
         Label vac = new Label("extracurricular base rate");
         Slider vacE = new Slider(0,1,.1);
 
-        Label n2 = new Label(".150");
+        Label n2 = new Label("0.150");
         Label nn2 = new Label("recovered base rate");
         Slider s2 = new Slider(0,1,.15);
 
-        Label n3 = new Label(".222");
+        Label n3 = new Label("0.222");
         Label nn3 = new Label("rapid test base rate");
         Slider s3 = new Slider(0,1,.222);
 
-        Label n4 = new Label(".990");
+        Label n4 = new Label("0.990");
         Label nn4 = new Label("correctly tested");
         Slider s4 = new Slider(0,1,.99);
 
