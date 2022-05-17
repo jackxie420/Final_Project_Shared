@@ -13,6 +13,7 @@ public class People {
     int students;
     double vacPercent;
     int maskMandate;
+    double base_rate = 0.8;
 
     //boarding/day faculty/student type of mask vaccination state susceptible/infected/recovered
 
@@ -25,7 +26,8 @@ public class People {
         82 teaching faculties
      */
 
-    People(int num_people,int board, int students,double vacPercent, int maskMandate){
+    People(int num_people,int board, int students,double vacPercent, int maskMandate, double inp_base_rate){
+        this.base_rate=inp_base_rate;
         this.Num_People=num_people;
         this.board = board;
         this.students = students;
@@ -67,6 +69,56 @@ public class People {
         return cal;
     }
 
+    public int get_residency(int index_person){
+        return (int) get_attributes(index_person).get(0);
+    }
+    public void set_residency(int index_person, int set){
+        get_attributes(index_person).set(0, set);
+    }
+    public int get_occupation(int index_person){
+        return (int) get_attributes(index_person).get(1);
+    }
+    public void set_occupation(int index_person, int set){
+        get_attributes(index_person).set(1, set);
+    }
+    public int get_mask(int index_person){
+        return (int) get_attributes(index_person).get(2);
+    }
+    public void set_mask(int index_person, int set){
+        get_attributes(index_person).set(2, set);
+    }
+    public int get_vaccination(int index_person){
+        return (int) get_attributes(index_person).get(3);
+    }
+    public void set_vaccination(int index_person, int set){
+        get_attributes(index_person).set(3, set);
+    }
+    public int get_state(int index_person){
+        return (int) get_attributes(index_person).get(4);
+    }
+    public void set_state(int index_person, int set){
+        get_attributes(index_person).set(4, set);
+    }
+    public int get_doi(int index_person){
+        return (int) get_attributes(index_person).get(5);
+    }
+    public void set_doi(int index_person, int set){
+        get_attributes(index_person).set(5, set);
+    }
+    public double get_base_rate(int index_person){
+        return (double) get_attributes(index_person).get(6);
+    }
+    public void set_base_rate(int index_person, double set){
+        get_attributes(index_person).set(6, set);
+    }
+    public int get_isolation(int index_person){
+        return (int) get_attributes(index_person).get(7);
+    }
+    public void set_isolation(int index_person, int set){
+        get_attributes(index_person).set(7, set);
+    }
+
+
     //random initialization
     void initialization(double initial_infected_prob) {
         for (int i = 0; i < Num_People; i++) {
@@ -102,7 +154,7 @@ public class People {
                 state = 0;
             }
             int doi = rand.nextInt(5) - 5;
-            double base_rate = 0.8;
+
             if(state==1) base_rate=0.15;
                     //calc_base_rate(0.8, 0.1);
             int isolation = 1;

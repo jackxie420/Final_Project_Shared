@@ -71,7 +71,7 @@ public class SIRgraph  extends Application {
         xAxis.setLabel("Number of Days");
         yAxis.setLabel("people");
         stage.setTitle("Line Chart Sample");
-
+        lineChart.setCreateSymbols(false);
         infected.setName("infected");
         susceptible.setName("susceptible");
         System.out.println(stat_lib.size());

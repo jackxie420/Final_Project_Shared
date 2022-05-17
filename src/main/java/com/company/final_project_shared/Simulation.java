@@ -13,7 +13,7 @@ public class Simulation {
     private static int number_of_boarders = 377;
     private static int number_of_faculties = 219;
     private static int number_of_extracurricular = 619;
-    private static People P_library ;
+    private static People P_library;
     private static Random rand = new Random();
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
@@ -22,6 +22,7 @@ public class Simulation {
     private static int num_dhall_interaction = 3;
     private static int num_extracurricular_interaction = 5;
     private static int num_boarding_interaction = 3;
+    private static double base_infection_rate=0.8;
     private static double extracurricular_base_rate=0.1;
     private static double recovered_base_rate=0.15;
     private static double rapidtest_base_rate = 0.222;
@@ -33,6 +34,8 @@ public class Simulation {
     private static int Target_Date=100;
     private static Settings setts = new Settings();
     private static int[] setStat;
+    private static double vac_percentage;
+    private static int covid_testing_interval=7;
 
 
 
@@ -40,9 +43,12 @@ public class Simulation {
 
 
     public Simulation() throws Exception {
-       // GraphRun();
+        //GraphRun();
         settingsRun();
         FileWriter= new WriteFile("information.txt");
+        P_library = new People(number_of_people,number_of_boarders,number_of_students,setStat[4]/10000.0,setStat[5], base_infection_rate);
+        //P_library = new People(number_of_people,number_of_boarders,number_of_students,.50,-1);
+
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
@@ -59,7 +65,6 @@ public class Simulation {
     private void settingsRun() {
         setts.begin();
         settingsChoice();
-        P_library = new People(number_of_people,number_of_boarders,number_of_students,setStat[4]/10000.0,setStat[5]);
     }
 
     private static double NormalDist(int x){
@@ -145,7 +150,7 @@ public class Simulation {
         for(int i=0; i<number_of_people; i++){
             for(int j=0; j<6; j++){
                 int receiver_idx= rand.nextInt(number_of_people);
-                while(receiver_idx==i){
+                while(receiver_idx==i||P_library.get_isolation(receiver_idx)==0){
                     receiver_idx= rand.nextInt(number_of_people);
                 }
                 interact(i, receiver_idx,-1);
@@ -154,69 +159,25 @@ public class Simulation {
     }
 
 
+
     private static void sim_academic() {
         for (int i = 0; i < number_of_people; i++) {
             for (int j = 0; j < num_academic_interaction; j++) {
                 int receiver_idx = rand.nextInt(number_of_people);
-                while (receiver_idx == i) {
+                while (receiver_idx == i||P_library.get_isolation(receiver_idx)==0) {
                     receiver_idx = rand.nextInt(number_of_people);
                 }
                 interact(i, receiver_idx,-1);
             }
         }
     }
-
-/*
-    //academic  student
-
-    private static void sim_academic_s() {
-        for (int i = 0; i < number_of_students; i++) {
-            for (int j = 0; j < num_academic_s_interaction; j++) {
-                int receiver_idx = rand.nextInt(number_of_students);
-                while (receiver_idx == i) {
-                    receiver_idx = rand.nextInt(number_of_students);
-                }
-                interact(i, receiver_idx,-1);
-            }
-        }
-    }
-
- */
-/*
-
-    private static void sim_academic_t() {
-        for (int i = number_of_students; i < number_of_students+number_of_faculties; i++) {
-            for (int j = 0; j < num_academic_t_interaction; j++) {
-                int receiver_idx = rand.nextInt(number_of_faculties)+number_of_students;
-                while (receiver_idx == i) {
-                    receiver_idx = rand.nextInt(number_of_faculties)+number_of_students;
-                }
-                interact(i, receiver_idx,-1);
-            }
-        }
-    }
-
- */
-/*
-    private static void sim_academic_st() {
-        for (int i = 0; i < number_of_people; i++) {
-            for (int j = 0; j < num_academic_st_interaction; j++) {
-                int receiver_idx = rand.nextInt(number_of_people);
-                while (receiver_idx == i) {
-                    receiver_idx = rand.nextInt(number_of_people);
-                }
-                interact(i, receiver_idx,-1);
-            }
-        }
-    }
-*/
 
     //boarding 377
     private static void sim_boarding(){
         for(int i=0; i<number_of_boarders; i++){
             for(int j=0; j<num_boarding_interaction;j++){
                 int receiver_idx = rand.nextInt(number_of_boarders);
-                while(receiver_idx==i){
+                while(receiver_idx==i||P_library.get_isolation(receiver_idx)==0){
                     receiver_idx = rand.nextInt(number_of_boarders);
                 }
                 interact(i, receiver_idx,-1);
@@ -228,7 +189,7 @@ public class Simulation {
         for(int i=0; i<number_of_people; i++){
             for(int j=0; j<num_dhall_interaction;j++){
                 int receiver_idx = rand.nextInt(number_of_people);
-                while(receiver_idx==i){
+                while(receiver_idx==i||P_library.get_isolation(receiver_idx)==0){
                     receiver_idx = rand.nextInt(number_of_people);
                 }
                 interact(i, receiver_idx,-1);
@@ -241,7 +202,7 @@ public class Simulation {
         for(int i=0; i<number_of_extracurricular; i++){
             for(int j=0; j<num_extracurricular_interaction;j++){
                 int receiver_idx = rand.nextInt(number_of_extracurricular);
-                while(receiver_idx==i){
+                while(receiver_idx==i||P_library.get_isolation(receiver_idx)==0){
                     receiver_idx = rand.nextInt(number_of_extracurricular);
                 }
                 interact(i, receiver_idx, extracurricular_base_rate);
@@ -250,7 +211,7 @@ public class Simulation {
     }
 
     private static void covid_testing(int interval){
-        while(Date % interval == 0){
+        if(Date % interval == 0){
             for (int i = 0; i < number_of_people; i++) {
                 if ((int)P_library.get_attributes(i).get(7) == 1){
                     if ((int)P_library.get_attributes(i).get(4) == 1){
@@ -264,7 +225,7 @@ public class Simulation {
         }
     }
 
-    private static void rapid_tests(int number_of_symptomatic_people){
+    private static void rapid_tests(){
         for(int i = 0; i<number_of_people; i++){
             if ((int)P_library.get_attributes(i).get(4)==1){
                 if((int)P_library.get_attributes(i).get(7)==1){
@@ -283,26 +244,26 @@ public class Simulation {
     private static void real_sim(){
 
         sim_academic();
-        /*
-
         sim_extracurricular();
         sim_boarding();
         sim_dhall();
+        //covid_testing(covid_testing_interval);
+        rapid_tests();
 
 
-         */
+
     }
 
     private static void day() throws Exception {
-        sim_stage();
-        //real_sim();
+        //sim_stage();
+        real_sim();
 
         check_doi();
         FileWriter.write_SI(Stat_lib.get_SI_day(Date)[0],Stat_lib.get_SI_day(Date)[1]);
-        //System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
+        System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
-            FileWriter.printTimes();
+            System.out.println("close file");
             FileWriter.close_writer();
             //Grapher.update(Stat_lib.get_SI_stat());
             //Grapher.first();
@@ -334,10 +295,10 @@ public class Simulation {
         num_extracurricular_interaction = setStat[8];
         num_boarding_interaction = setStat[9];
         num_academic_interaction = setStat[10];
-        extracurricular_base_rate=setStat[11];
-        recovered_base_rate=setStat[12];
-        rapidtest_base_rate = setStat[13];
-        coreectly_tested = setStat[14];
+        extracurricular_base_rate=setStat[11]/ 1000.0;
+        recovered_base_rate=setStat[12]/ 1000.0;
+        rapidtest_base_rate = setStat[13]/ 1000.0;
+        coreectly_tested = setStat[14]/ 1000.0;
 
 
     }
