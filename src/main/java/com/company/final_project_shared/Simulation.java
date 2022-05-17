@@ -96,29 +96,25 @@ public class Simulation {
         //P_library.input_attributes(0,1,1,1,1,1);
         //P_library.input_attributes(1,1,1,1,1,0);
 
-        ArrayList person_one=P_library.get_attributes(one);
-        ArrayList person_two=P_library.get_attributes(two);
-
-        if((int)person_one.get(5)==Date||(int)person_one.get(7)==0){
+        if(P_library.get_doi(one)==Date||P_library.get_isolation(one)==0){
             return;
         }
-        if((int)person_two.get(5)==Date||(int)person_two.get(7)==0){
+        if(P_library.get_doi(two)==Date||P_library.get_isolation(two)==0){
             return;
         }
 
-        if((person_one.get(4)!=person_two.get(4))&&(int)person_one.get(4)==1){
-            double base_rate=(double)person_two.get(6);
+        if((P_library.get_state(one)!=P_library.get_state(two)&&P_library.get_state(one)==1)){
+            double base_rate= P_library.get_base_rate(two);
             if(modified_transmission_rate!=-1){
                 base_rate=modified_transmission_rate;
             }
-            base_rate*=V_lib.vac_effectiveness((int)person_two.get(3))*M_lib.mask_effectiveness((int)person_two.get(2));
+            base_rate*=V_lib.vac_effectiveness(P_library.get_vaccination(two))*M_lib.mask_effectiveness(P_library.get_mask(two));
 
             //System.out.println(base_rate);
             Double rand_rate = rand.nextDouble();
             if (rand_rate<base_rate){
-                person_two.set(4,1);
-                person_two.set(5,Date);
-                P_library.set_person_attributes(two, person_two);
+                P_library.set_state(two,1);
+                P_library.set_doi(two,Date);
             }
         }
     }
@@ -129,12 +125,13 @@ public class Simulation {
         for (int i = 0; i < number_of_people; i++) {
             //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
             //if(i==0) System.out.println("date: "+Date+" person 0 rate: "+P_library.get_attributes(i).get(6));
-            if((Date - (int)P_library.get_attributes(i).get(5))>5) {
+            if((Date - P_library.get_doi(i))>5) {
                 //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
-                P_library.get_attributes(i).set(4,0);
-                P_library.get_attributes(i).set(6,recovered_base_rate);
+                P_library.set_state(i,0);
+                P_library.set_isolation(i,1);
+                P_library.set_base_rate(i,recovered_base_rate);
             }
-            if((int)P_library.get_attributes(i).get(4) != 1){
+            if(P_library.get_state(i) != 1){
                 sus_num++;
             }else {
                 inf_num++;
@@ -213,10 +210,11 @@ public class Simulation {
     private static void covid_testing(int interval){
         if(Date % interval == 0){
             for (int i = 0; i < number_of_people; i++) {
-                if ((int)P_library.get_attributes(i).get(7) == 1){
-                    if ((int)P_library.get_attributes(i).get(4) == 1){
+                if (P_library.get_isolation(i) == 1){
+                    if (P_library.get_state(i) == 1){
                         if (coreectly_tested * Math.random()*10000<99)
-                        P_library.get_attributes(i).set(7,0);
+                        P_library.set_isolation (i,0);
+                        P_library.set_doi(i, Date);
                     }
                     //
                     //doi remove from quarantine
@@ -227,15 +225,14 @@ public class Simulation {
 
     private static void rapid_tests(){
         for(int i = 0; i<number_of_people; i++){
-            if ((int)P_library.get_attributes(i).get(4)==1){
-                if((int)P_library.get_attributes(i).get(7)==1){
-                   // if (rapidtest_base_rate * rand.nextInt() )
-
-//rapidtest_base_rate
-// .6*.37
-                    //set date to current date if test positive
-                    //quarantine
-                    //another if. if already in quarantine nothing applies
+            if (P_library.get_state(i)==1){
+                if(P_library.get_isolation(i)==1){
+                    double rate = rand.nextDouble();
+                   if (rate<rapidtest_base_rate ){
+                       System.out.println("double rate "+rapidtest_base_rate);
+                       P_library.set_isolation(i,0);
+                       P_library.set_doi(i,Date);
+                   }
                 }
             }
         }
