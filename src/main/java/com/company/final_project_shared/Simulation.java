@@ -18,11 +18,7 @@ public class Simulation {
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
     private static Statistics Stat_lib = new Statistics();
-    private static int num_interaction = 7;
     private static int num_academic_interaction = 7;
-    private static int num_academic_s_interaction = 10;
-    private static int num_academic_t_interaction = 5;
-    private static int num_academic_st_interaction = 5;
     private static int num_dhall_interaction = 3;
     private static int num_extracurricular_interaction = 5;
     private static int num_boarding_interaction = 3;
@@ -44,10 +40,9 @@ public class Simulation {
 
 
     public Simulation() throws Exception {
-        GraphRun();
+       // GraphRun();
         settingsRun();
         FileWriter= new WriteFile("information.txt");
-        //System.out.println("a");
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
@@ -158,20 +153,6 @@ public class Simulation {
         }
     }
 
-    private static void sim_stage_lambda(){
-
-        //IntStream.range(0, number_of_people).range(0, num_interaction).map(f->{int idx = rand.nextInt(number_of_people);interact(idx,idx)});
-
-        for(int i=0; i<number_of_people; i++){
-            for(int j=0; j<num_interaction; j++){
-                int receiver_idx= rand.nextInt(number_of_people);
-                while(receiver_idx==i){
-                    receiver_idx= rand.nextInt(number_of_people);
-                }
-                interact(i, receiver_idx,-1);
-            }
-        }
-    }
 
     private static void sim_academic() {
         for (int i = 0; i < number_of_people; i++) {
@@ -321,6 +302,7 @@ public class Simulation {
         //System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
+            FileWriter.printTimes();
             FileWriter.close_writer();
             //Grapher.update(Stat_lib.get_SI_stat());
             //Grapher.first();
@@ -347,6 +329,16 @@ public class Simulation {
         number_of_boarders = setStat[1];
         number_of_faculties = setStat[3];
         number_of_people = setStat[1]+setStat[2]+setStat[3];
+        number_of_extracurricular = setStat[6];
+        num_dhall_interaction = setStat[7];
+        num_extracurricular_interaction = setStat[8];
+        num_boarding_interaction = setStat[9];
+        num_academic_interaction = setStat[10];
+        extracurricular_base_rate=setStat[11];
+        recovered_base_rate=setStat[12];
+        rapidtest_base_rate = setStat[13];
+        coreectly_tested = setStat[14];
+
 
     }
 

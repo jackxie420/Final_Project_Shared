@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class WriteFile {
-
+    private static int times = 0;
 
     private static FileWriter myWriter = null;
 
@@ -19,6 +19,7 @@ public class WriteFile {
 
     public static void write_SI(int S, int I){
         try{
+            times++;
             System.out.println("writting");
             myWriter.write(S+" "+I+"\n");
         }catch(IOException e){
@@ -36,5 +37,9 @@ public class WriteFile {
             System.out.println("Output Error close File");
             System.exit(0);
         }
+    }
+
+    public static void printTimes(){
+        System.out.println(times);
     }
 }

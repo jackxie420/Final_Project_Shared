@@ -74,7 +74,7 @@ public class SIRgraph  extends Application {
 
         infected.setName("infected");
         susceptible.setName("susceptible");
-        //System.out.println(stat_lib.size());
+        System.out.println(stat_lib.size());
         for (int i = 0; i < stat_lib.size(); i++) {
             ;
             infected.getData().add(new XYChart.Data(i+1,stat_lib.get(i)[1]));
