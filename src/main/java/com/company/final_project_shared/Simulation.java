@@ -299,7 +299,11 @@ public class Simulation {
         recovered_base_rate=setStat[12]/ 1000.0;
         rapidtest_base_rate = setStat[13]/ 1000.0;
         coreectly_tested = setStat[14]/ 1000.0;
+        base_infection_rate = setStat[15]/ 1000.0;
+        covid_testing_interval=setStat[16];
+        testing_status=setStat[17];
 
+        System.out.println("Aaaa"+setStat[5]);
 
     }
 

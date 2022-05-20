@@ -39,7 +39,7 @@ public class People {
         for(int i=0; i<num_people; i++){
             people.add(new ArrayList<>());
         }
-        initialization(0.1);
+        initialization(initialInfection);
     }
 
     void input_attributes(int index, int residency, int occupation, int mask, int vaccination, int state, int doi, double base_rate, int isolation){

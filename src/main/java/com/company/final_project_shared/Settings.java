@@ -67,6 +67,10 @@ values key
 12 recovered_base_rate / 100 for true value
 13 rapidtest_base_rate / 100 for true value
 14 coreectly_tested / 100 for true value
+15 base infection rate
+16 rapid test interval
+17 is what kind of testing allowed 0 none 1 rapid 2 pcr 3 both
+18 initial infection % /100 for percent
 
 6 virus type 0 is omicron 1 is delta
 
@@ -114,6 +118,11 @@ public class Settings extends Application {
         key.put("recovBR",12);
         key.put("rapidBR",13);
         key.put("correctT",14);
+        key.put("baseRate",15);
+        key.put("testInt",16);
+        key.put("testStat",17);
+        key.put("infect%",18);
+
 
 
     }
@@ -235,17 +244,30 @@ public class Settings extends Application {
         windows[2].setTitle("Settings");
         Label number = new Label("Number of Days in Simulation");
         Button back = new Button("Back");
-        Button apply = new Button("Apply");
+
         TextField days = new TextField("100");
+        Button apply = new Button("apply");
+
+        Label number2 = new Label("0.10");
+        Label vac = new Label("initial infection percentage");
+        Slider vacE = new Slider(0, 1, 0.10);
+
         // create a stack pane
         GridPane r = new GridPane();
         //default value for variables add so nothing breaks if it isn't changed
         values[key.get("Nday")] = 100;
+        values[key.get("infect%")] = 10;
 
-        r.add(back,0,1);
+        r.add(back,0,2);
+
+        r.add(vacE, 1, 1);
+        r.add(vac, 0, 1);
+        r.add(number2, 2, 1);
+
         r.add(days,1,0);
         r.add(apply,2,0);
         r.add(number,0,0);
+
         r.setAlignment(Pos.CENTER);
 
         back.setOnAction(new EventHandler<ActionEvent>() {
@@ -255,10 +277,20 @@ public class Settings extends Application {
 
             }
         });
+
+
         apply.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 values[key.get("Nday")] = Integer.parseInt( days.getText());
 
+            }
+        });
+
+        vacE.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                number2.setText(String.format("%.2f%s", new_val, ""));
+                values[key.get("infect%")] = (int) (new_val.doubleValue()*100);
             }
         });
 
@@ -360,19 +392,28 @@ public class Settings extends Application {
         windows[3].setScene(sc);
     }
 
-    private void policy(){
+    private void policy() {
         windows[4] = new Stage();
         windows[4].setTitle("policy");
         Label number = new Label("50.00%");
         Label vac = new Label("Vaccination Percentage");
-        Slider vacE = new Slider(0,100,50);
+        Slider vacE = new Slider(0, 100, 50);
         Button back = new Button("Back");
         final ComboBox masks = new ComboBox();
-        // create a stack pane
+        final ComboBox test = new ComboBox();
+
+        Label number2 = new Label("Time between rapid tests");
+        Button apply = new Button("apply");
+
+        TextField days = new TextField("7");
+
+        // crea7a stack pane
         GridPane r = new GridPane();
         //default value for variables add so nothing breaks if it isn't changed
         values[key.get("vacP")] = 5000;
         values[key.get("maskT")] = 0;
+        values[key.get("testStat")] = 0;
+        values[key.get("testInt")] = 7;
 
         masks.getItems().addAll(
                 "Surgical",
@@ -380,18 +421,32 @@ public class Settings extends Application {
                 "N95",
                 "none"
         );
+        test.getItems().addAll(
+                "No test",
+                "Rapid Test",
+                "Pcr Test",
+                "Both"
+        );
         masks.setValue(masks.getItems().get(0));
+        test.setValue(test.getItems().get(0));
 
 
-        r.add(back,0,2);
-        r.add(vacE,1,0);
-        r.add(vac,0,0);
-        r.add(number,2,0);
-        r.add(masks,0,1);
+        r.add(back, 0, 3);
+        r.add(vacE, 1, 0);
+        r.add(vac, 0, 0);
+        r.add(number, 2, 0);
+        r.add(masks, 0, 1);
+        r.add(test, 1, 1);
+
+        r.add(days, 1, 2);
+        r.add(apply, 2, 2);
+        r.add(number2, 0, 2);
+
         r.setAlignment(Pos.CENTER);
 
         back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+            @Override
+            public void handle(ActionEvent e) {
                 windows[4].hide();
                 windows[1].show();
 
@@ -400,22 +455,46 @@ public class Settings extends Application {
         vacE.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                number.setText(String.format("%.2f%s", new_val,"%"));
-                values[key.get("vacP")] = (int)(new_val.doubleValue()*100);
+                number.setText(String.format("%.2f%s", new_val, "%"));
+                values[key.get("vacP")] = (int) (new_val.doubleValue() * 100);
             }
         });
         masks.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                if ('S' ==masks.getValue().toString().charAt(0)){
-                    values[key.get("maskT")] = 0;
-                }else if ('C' ==masks.getValue().toString().charAt(0)){
-                    values[key.get("maskT")] = 1;
-                }else if ('N' ==masks.getValue().toString().charAt(0)){
-                    values[key.get("maskT")] = 2;
-                }else if ('n' ==masks.getValue().toString().charAt(0)){
-                    values[key.get("maskT")] = 3;
+            @Override
+            public void handle(ActionEvent e) {
+                if ('N' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("testStat")] = 0;
+                } else if ('R' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("testStat")] = 1;
+                } else if ('B' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("testStat")] = 2;
+                } else if ('B' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("testStat")] = 3;
                 }
 
+
+            }
+        });
+
+        masks.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if ('S' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("maskT")] = 0;
+                } else if ('C' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("maskT")] = 1;
+                } else if ('N' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("maskT")] = 2;
+                } else if ('n' == masks.getValue().toString().charAt(0)) {
+                    values[key.get("maskT")] = -1;
+                }
+
+
+            }
+        });
+        apply.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                values[key.get("testInt")] = Integer.parseInt( days.getText());
 
             }
         });
@@ -426,9 +505,7 @@ public class Settings extends Application {
         // set the scene
         windows[4].setScene(sc);
 
-
     }
-
     private void virus(){
         windows[5] = new Stage();
         windows[5].setTitle("virus");
@@ -467,6 +544,10 @@ public class Settings extends Application {
         Label nn4 = new Label("PCR accuracy");
         Slider s4 = new Slider(0,1,.99);
 
+        Label n5 = new Label("0.800");
+        Label nn5 = new Label("base infection rate");
+        Slider s5 = new Slider(0,1,.8);
+
 
         // create a stack pane
         GridPane r = new GridPane();
@@ -479,6 +560,7 @@ public class Settings extends Application {
         values[key.get("recovBR")] = 150;
         values[key.get("rapidBR")] = 222;
         values[key.get("correctT")] = 990;
+        values[key.get("baseRate")] = 800;
 
         r.add(back,0,4);
         r.add(fac,1,0);
@@ -512,6 +594,10 @@ public class Settings extends Application {
         r.add(s4,1,8);
         r.add(nn4,0,8);
         r.add(n4,2,8);
+
+        r.add(s5,1,9);
+        r.add(nn5,0,9);
+        r.add(n5,2,9);
 
         r.setAlignment(Pos.CENTER);
 
@@ -583,6 +669,13 @@ public class Settings extends Application {
             }
         });
 
+        s5.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                n5.setText(String.format("%.3f", new_val));
+                values[key.get("baseRate")] = (int)(new_val.doubleValue()*100);
+            }
+        });
         // create a scene
         Scene sc = new Scene(r, 800, 600);
 
