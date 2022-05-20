@@ -57,7 +57,7 @@ values key
 2 number of day students
 3 number of faculty
 4 percentage vaccinated  divide by 100 to get percentage
-5 type mandated 0 surgical 1 cloth 2 N95 4 none
+5 type mandated 0 surgical 1 cloth 2 N95 -1 none
 6 participants in co curricular
 7 number of dinning hall interactions
 8 number of extra cocurricular interactions
@@ -464,7 +464,7 @@ public class Settings extends Application {
         Slider s3 = new Slider(0,1,.222);
 
         Label n4 = new Label("0.990");
-        Label nn4 = new Label("correctly tested");
+        Label nn4 = new Label("PCR accuracy");
         Slider s4 = new Slider(0,1,.99);
 
 

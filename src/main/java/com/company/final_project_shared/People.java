@@ -14,6 +14,7 @@ public class People {
     double vacPercent;
     int maskMandate;
     double base_rate = 0.8;
+    double recovered_base_rate;
 
     //boarding/day faculty/student type of mask vaccination state susceptible/infected/recovered
 
@@ -26,8 +27,9 @@ public class People {
         82 teaching faculties
      */
 
-    People(int num_people,int board, int students,double vacPercent, int maskMandate, double inp_base_rate){
+    People(int num_people,int board, int students,double vacPercent, int maskMandate, double inp_base_rate, double inp_rec_base_rate, double initialInfection){
         this.base_rate=inp_base_rate;
+        this.recovered_base_rate=inp_rec_base_rate;
         this.Num_People=num_people;
         this.board = board;
         this.students = students;
@@ -133,33 +135,37 @@ public class People {
                 occupation = 3;
             }
             int mask = rand.nextInt(1) - 1;
-            if(maskMandate == 4){
+            if(maskMandate == -1){
                 mask = rand.nextInt(4) - 1;
             }else if(maskMandate == 1){
-                mask = 0;
+                mask = 1;
             } else if(maskMandate == 0){
-                mask = 2;
-            }else {mask = 3;}
+                mask = 0;
+            }else {mask = 2;}
 
             int vaccination ;
             if(rand.nextDouble()<=vacPercent){
-                vaccination = 1;
-            }else {
                 vaccination = 0;
+            }else {
+                vaccination = 1;
             }
             int state;
+            double inp_base_rate;
+            //System.out.println(initial_infected_prob);
             if (rand.nextDouble() <= initial_infected_prob) {
                 state = 1;
+                inp_base_rate=recovered_base_rate;
             } else {
                 state = 0;
+                inp_base_rate=base_rate;
             }
             int doi = rand.nextInt(5) - 5;
 
-            if(state==1) base_rate=0.15;
                     //calc_base_rate(0.8, 0.1);
+            //System.out.println(inp_base_rate);
             int isolation = 1;
             //System.out.println("base rate: "+base_rate);
-            input_attributes(index, residency, occupation, mask, vaccination, state, doi, base_rate,isolation);
+            input_attributes(index, residency, occupation, mask, vaccination, state, doi, inp_base_rate,isolation);
             
         }
     }

@@ -35,7 +35,8 @@ public class Simulation {
     private static Settings setts = new Settings();
     private static int[] setStat;
     private static double vac_percentage;
-    private static int covid_testing_interval=7;
+    private static int covid_testing_interval=5;
+    private static int testing_status=0;
 
 
 
@@ -46,13 +47,14 @@ public class Simulation {
         //GraphRun();
         settingsRun();
         FileWriter= new WriteFile("information.txt");
-        P_library = new People(number_of_people,number_of_boarders,number_of_students,setStat[4]/10000.0,setStat[5], base_infection_rate);
+        P_library = new People(number_of_people,number_of_boarders,number_of_students,setStat[4]/10000.0,setStat[5], base_infection_rate, recovered_base_rate,setStat[18]/100.0);
         //P_library = new People(number_of_people,number_of_boarders,number_of_students,.50,-1);
 
         initialize_stat();
         for(int i=0; i<Target_Date; i++){
             day();
         }
+
     }
     private void GraphRun() throws Exception {
         FileReader.retrieve();
@@ -108,6 +110,7 @@ public class Simulation {
             if(modified_transmission_rate!=-1){
                 base_rate=modified_transmission_rate;
             }
+            //System.out.println("si , inter, mask: "+P_library.get_mask(two));
             base_rate*=V_lib.vac_effectiveness(P_library.get_vaccination(two))*M_lib.mask_effectiveness(P_library.get_mask(two));
 
             //System.out.println(base_rate);
@@ -125,7 +128,7 @@ public class Simulation {
         for (int i = 0; i < number_of_people; i++) {
             //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
             //if(i==0) System.out.println("date: "+Date+" person 0 rate: "+P_library.get_attributes(i).get(6));
-            if((Date - P_library.get_doi(i))>5) {
+            if((P_library.get_state(i)==1&&(Date - P_library.get_doi(i))>5) ){
                 //P_library.get_attributes(i).set(6,NormalDist(Date - (int)P_library.get_attributes(i).get(5)));
                 P_library.set_state(i,0);
                 P_library.set_isolation(i,1);
@@ -229,7 +232,7 @@ public class Simulation {
                 if(P_library.get_isolation(i)==1){
                     double rate = rand.nextDouble();
                    if (rate<rapidtest_base_rate ){
-                       System.out.println("double rate "+rapidtest_base_rate);
+                       //System.out.println("double rate "+rapidtest_base_rate);
                        P_library.set_isolation(i,0);
                        P_library.set_doi(i,Date);
                    }
@@ -244,8 +247,8 @@ public class Simulation {
         sim_extracurricular();
         sim_boarding();
         sim_dhall();
-        //covid_testing(covid_testing_interval);
-        rapid_tests();
+        if(testing_status==2||testing_status==3) covid_testing(covid_testing_interval);
+        if(testing_status==1||testing_status==3) rapid_tests();
 
 
 
@@ -260,7 +263,7 @@ public class Simulation {
         System.out.println("SI Info: "+Stat_lib.get_SI_day(Date)[0]+" "+Stat_lib.get_SI_day(Date)[1]);
         Date++;
         if(Date==Target_Date){
-            System.out.println("close file");
+            //System.out.println("close file");
             FileWriter.close_writer();
             //Grapher.update(Stat_lib.get_SI_stat());
             //Grapher.first();
