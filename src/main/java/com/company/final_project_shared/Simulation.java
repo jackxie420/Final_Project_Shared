@@ -1,10 +1,6 @@
 package com.company.final_project_shared;
 import java.util.Random;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.stream.Stream;
-import java.util.stream.IntStream;
 
 public class Simulation {
 
@@ -60,7 +56,7 @@ public class Simulation {
         FileReader.retrieve();
         Stat_lib.total_SI = FileReader.get();
         SIRgraph graph = new SIRgraph();
-        graph.first();
+        graph.Begin();
         System.exit(0);
     }
 
