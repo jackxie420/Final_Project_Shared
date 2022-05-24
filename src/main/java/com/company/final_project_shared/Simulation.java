@@ -158,8 +158,6 @@ public class Simulation {
         }
     }
 
-
-
     private static void sim_academic() {
         for (int i = 0; i < number_of_people; i++) {
             for (int j = 0; j < num_academic_interaction; j++) {
@@ -172,7 +170,6 @@ public class Simulation {
         }
     }
 
-    //boarding 377
     private static void sim_boarding(){
         for(int i=0; i<number_of_boarders; i++){
             for(int j=0; j<num_boarding_interaction;j++){
