@@ -13,7 +13,7 @@ public class Simulation {
     private static Random rand = new Random();
     private static Mask M_lib = new Mask();
     private static Vac V_lib = new Vac();
-    private static Statistics Stat_lib = new Statistics();
+    private static Data Stat_lib = new Data();
     private static int num_academic_interaction = 7;
     private static int num_dhall_interaction = 3;
     private static int num_extracurricular_interaction = 5;
