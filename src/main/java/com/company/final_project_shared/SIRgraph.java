@@ -18,16 +18,6 @@ public class SIRgraph  extends Application {
 
 
 
-    //defining the axes
-
-
-
-
-    //creating the chart
-
-
-//quick chart and swing raptor
-
     public void Begin() throws Exception {
         launch();
         /*
@@ -44,9 +34,9 @@ public class SIRgraph  extends Application {
 
     }
 
-
     public void update(ArrayList<int[]> stat){
         stat_lib= (ArrayList<int[]>) stat.clone();
+
     }
 
     @Override
@@ -86,4 +76,7 @@ public class SIRgraph  extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
 }

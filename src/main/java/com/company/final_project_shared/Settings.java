@@ -248,15 +248,15 @@ public class Settings extends Application {
         TextField days = new TextField("100");
         Button apply = new Button("apply");
 
-        Label number2 = new Label("0.10");
+        Label number2 = new Label("0.01");
         Label vac = new Label("initial infection percentage");
-        Slider vacE = new Slider(0, 1, 0.10);
+        Slider vacE = new Slider(0, 1, 0.01);
 
         // create a stack pane
         GridPane r = new GridPane();
         //default value for variables add so nothing breaks if it isn't changed
         values[key.get("Nday")] = 100;
-        values[key.get("infect%")] = 10;
+        values[key.get("infect%")] = 1;
 
         r.add(back,0,2);
 
